@@ -22,13 +22,34 @@ class Firewall (object):
 
   def do_firewall (self, packet, packet_in):
     # The code in here will be executed for every packet
+    if packet.type == packet.ARP_TYPE:
+      print("ARP Packet")
+      accept()
+    elif packet.type == packet.ICMP_TYPE:
+      print("ICMP Packet")
+      accept()
 
     def accept():
+      #allow all ARP and ICMP traffic across the network
       # Write code for an accept function
+
+      # ARP
+    
+      msg = of.ofp_flow_mod()
+      msg.match = of.ofp_match.from_packet(packet)
+      msg.actions.append(of.ofp_action_output(port = of.OFPP_FLOOD))
+      self.connection.send(msg)
+
+      
+
       print("Packet Accepted - Flow Table Installed on Switches")
 
     def drop():
       # Write code for a drop function
+      # Drop packet
+      msg = of.ofp_flow_mod()
+      msg.match = of.ofp_match.from_packet(packet)
+      self.connection.send(msg)
       print("Packet Dropped - Flow Table Installed on Switches")
 
     # Write firewall code 
