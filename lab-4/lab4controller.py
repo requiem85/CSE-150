@@ -1,6 +1,17 @@
 # Lab 4 controller skeleton 
 #
-# Based on of_tutorial by James McCauley
+# # Based on of_tutorial by James McCauley
+# General Connectivity: Allow all ARP and ICMP traffic across the network to facilitate general
+# network connectivity.
+# 2. Web Traffic: Allow all TCP traffic between workstations (WS) or personal computers (PC) within
+# the University (not from the internet) and the web server (webServer).
+# 3. Faculty Access: Allow all TCP traffic between faculty WS and PC with the exam server
+# (examServer).
+# 4. IT Management: Allow all TCP and UDP traffic between IT WS and PC with any WS or PC
+# within the University (not from the internet).
+# 5. DNS Traffic: Allow all UDP traffic between WSs or PCs within the University (not from the
+# internet) and the DNS server (dnsServer).
+# 6. Default Deny: Block all traffic that does not match the above criteria.
 
 from pox.core import core
 import pox.openflow.libopenflow_01 as of
@@ -22,16 +33,9 @@ class Firewall (object):
 
   def do_firewall (self, packet, packet_in):
     # The code in here will be executed for every packet
-    if packet.type == packet.ARP_TYPE:
-      print("ARP Packet")
-      accept()
-    elif packet.type == packet.ICMP_TYPE:
-      print("ICMP Packet")
-      accept()
-
+   
     def accept():
-      #allow all ARP and ICMP traffic across the network
-      # Write code for an accept function
+    
 
       # ARP
     
@@ -53,7 +57,23 @@ class Firewall (object):
       print("Packet Dropped - Flow Table Installed on Switches")
 
     # Write firewall code 
+      
     print("Example Code")
+    if packet.type == packet.ARP_TYPE:
+      print("ARP Packet")
+      accept()
+    elif packet.type == packet.ICMP_TYPE:
+      print("ICMP Packet")
+      accept()
+    
+      
+     
+    else:
+      print("Unknown Packet")
+      drop()
+
+    
+
 
   def _handle_PacketIn (self, event):
     """
