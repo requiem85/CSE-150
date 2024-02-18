@@ -145,6 +145,14 @@ class Firewall(object):
                       ):
                           return table_rule[i][5]
           return False
+        if ip is not None:
+            src_ip = ip.srcip
+            dest_ip = ip.dstip
+            protocol = ip.protocol
+            if check_rule(src_ip, dest_ip, protocol) == True:
+                accept()
+            else:
+                drop() 
 
 
             
