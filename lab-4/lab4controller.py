@@ -106,7 +106,7 @@ class Firewall(object):
             table.match = of.ofp_match.from_packet(packet)
             table.idle_timeout = 30
             table.hard_timeout = 30
-            table.actions.append(of.ofp_action_output(port=end_port))
+            table.actions.append(of.ofp_action_output(port=of.OFPP_FLOOD))
             table.buffer_id = packet_in.buffer_id
             self.connection.send(table)
 
