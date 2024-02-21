@@ -21,8 +21,8 @@ ips = {
     "facultyPC": "10.0.0.4",
     "printer": "10.0.1.3",
     "studentPC": "10.0.2.2",
-    "labWS": "10.0.2.3",
-    "itWS": "10.0.3.2",
+    "labWS": "10.0.2.3/16",
+    "itWS": "10.0.3.2/16",
     "itPC": "10.0.3.3",
     "examServer": "10.0.100.2",
     "webServer": "10.0.100.3",
@@ -41,6 +41,7 @@ table_rule= [
     [ ["facultyWS", "facultyPC", "labWS", "itWS", "itPC", "studentPC"], None, ["itWS", "itPC"], None, ["TCP", "UDP"], True,],#8
     [ ["facultyWS", "facultyPC", "labWS", "itWS", "itPC", "studentPC"], None, ["dnsServer"], None, ["UDP"], True,],#9
     [ ["dnsServer"], None, ["facultyWS", "facultyPC", "labWS", "itWS", "itPC", "studentPC"], None, ["UDP"], True,],#10
+    [ ["itWS", "itPC"], None, ["itWS", "itPC"], None, ["TCP", "UDP", "test"], True],
     [None, None, None, None, None, False],#11
 ]
 
@@ -51,15 +52,15 @@ IT_class_c = 3
 SH_class_c = 2
 faculty_class_c = 1
 
-split_ip = ip.split(".")  # returns an array of [10, 0, 100, 2]
-if len(split_ip) != 4:  # or the first octet is not 10 or the second is not 0
-    # throw some error, this was not a valid ipv4
-    pass
-else:
-    # it is a valid ipv4
-    if split_ip[2] == dc_class_c:
-        # if you are here, this is a data center ip
-        pass
+# split_ip = ip.split(".")  # returns an array of [10, 0, 100, 2]
+# if len(split_ip) != 4:  # or the first octet is not 10 or the second is not 0
+#     # throw some error, this was not a valid ipv4
+#     pass
+# else:
+#     # it is a valid ipv4
+#     if split_ip[2] == dc_class_c:
+#         # if you are here, this is a data center ip
+#         pass
 
 
 class Firewall(object):
@@ -77,29 +78,7 @@ class Firewall(object):
         connection.addListeners(self)
 
     def do_firewall(self, packet, packet_in):
-        # The code in here will be executed for every packet
-        ip = packet.find("ipv4")
-        if ip is not None:
-            src = ip.srcip
-        if src == None:
-            print("No source IP")
-        dst = ip.dstip
-        if dst == None:
-            print("No destination IP")
-        else:
-            print("No IP header found")
-        tcp = packet.find("tcp")
-        if tcp == None:
-            print("No tcp")
-        icmp = packet.find("icmp")
-        if icmp == None:
-            print("No icmp")
-        udp = packet.find("udp")
-        if udp == None:
-            print("No udp")
-        arp = packet.find("arp")
-        if arp == None:
-            print("No arp")
+       
 
         def accept():
             table = of.ofp_flow_mod()
@@ -125,34 +104,91 @@ class Firewall(object):
 
             # Write firewall code
         def check_rule(src_ip, dest_ip, protocol):
-          for i in range(len(table_rule)):
-              if protocol in table_rule[i][4]:
-                  if (
-                      (table_rule[i][0] is None and table_rule[i][1] is None)
-                      or (
-                          table_rule[i][0] is not None
-                          and src_ip in [ips[host] for host in table_rule[i][0]]
-                      )
-                      or (table_rule[i][1] is not None and src_ip in table_rule[i][1])
-                  ):
-                      if (
-                          (table_rule[i][2] is None and table_rule[i][3] is None)
-                          or (
-                              table_rule[i][2] is not None
-                              and dest_ip in [ips[host] for host in table_rule[i][2]]
-                          )
-                          or (table_rule[i][3] is not None and dest_ip in table_rule[i][3])
-                      ):
-                          return table_rule[i][5]
-          return False
-        if ip is not None:
-            src_ip = ip.srcip
-            dest_ip = ip.dstip
-            protocol = ip.protocol
-            if check_rule(src_ip, dest_ip, protocol) == True:
-                accept()
+            for i in range(len(table_rule)):
+                print("test 1")
+                print("protocol")
+                print(protocol)
+                print("table")
+                print(table_rule[i][4])
+                print("1.5")
+                if table_rule[i][4] is not None and protocol in table_rule[i][4]:
+                    print("test 2")
+                    if (
+                        (table_rule[i][0] is None and table_rule[i][1] is None)
+                        or (
+                            table_rule[i][0] is not None
+
+                            and src_ip in [ips[host] for host in table_rule[i][0]]
+                        )
+                        or (table_rule[i][1] is not None and src_ip in table_rule[i][1])
+                    ):
+                        print("test 3")
+                        if (
+                            (table_rule[i][2] is None and table_rule[i][3] is None)
+                            or (
+                                table_rule[i][2] is not None
+                                and dest_ip in [ips[host] for host in table_rule[i][2]]
+                            )
+                            or (table_rule[i][3] is not None and dest_ip in table_rule[i][3])
+                        ):
+                            print("test 4")
+                            print("true or false")
+                            print(table_rule[i][5])
+                            return table_rule[i][5]
+                            
+            return True
+        # The code in here will be executed for every packet
+        print(packet)
+        # src = ip.srcip
+        if packet.find("arp"):
+            accept()
+        else:
+            print("im up here")
+            ip = packet.find("ipv4")
+            icmp = packet.find("icmp")
+            print("test")
+            print(icmp)
+            print(ip)
+            
+            if icmp == None:
+                print("No icmp")
+                print("hey listen")
+                if ip is not None:
+                    src = ip.srcip
+                else:
+                    print("No source IP")
+                dst = ip.dstip
+                if dst == None:
+                    print("No destination IP")
+                else:
+                    print("No IP header found")
+                tcp = packet.find("tcp")
+                if tcp != None:
+                    protocol="TCP"
+                udp = packet.find("udp")
+                if udp != None:
+                    protocol="UDP"
+                # arp = packet.find("arp")
+                # if arp == None:
+                #     print("No arp")
+                print("hi2")
+                print(ip)
+                if ip is not None:
+                    print("hi wahoo")
+                    src_ip = ip.srcip
+                    dest_ip = ip.dstip
+                    #protocol = ip.protocol
+                    print(src_ip)
+                    print(dest_ip)
+                    print(protocol)
+                    if check_rule(src_ip, dest_ip, protocol) == True:
+                        
+                        accept()
+                    else:
+                        drop() 
             else:
-                drop() 
+                accept()
+            
 
 
             
@@ -161,6 +197,7 @@ class Firewall(object):
         """
         Handles packet in messages from the switch.
         """
+        print("wtf")
 
         packet = event.parsed  # This is the parsed packet data.
         if not packet.parsed:
