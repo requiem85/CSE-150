@@ -42,7 +42,7 @@ class MyTopology(Topo):
     self.addLink(itPC, ItLan, port1=32, port2=62)
     self.addLink(examServer, DataCenter, port1=101, port2=401)
     self.addLink(webServer, DataCenter, port1=102, port2=402)
-    self.addLink(dnsServer, DataCenter, port1=105, port2=403)
+    # self.addLink(dnsServer, DataCenter, port1=105, port2=403)
     self.addLink(trustedPC, CoreSwitch, port1=200, port2=200)
     self.addLink(guestPC, CoreSwitch, port1=201, port2=201)
  
