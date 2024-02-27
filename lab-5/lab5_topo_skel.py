@@ -40,17 +40,17 @@ class MyTopology(Topo):
     self.addLink(itPC, ItLan, port1=32, port2=62)
 
 
-    examServer = self.addHost('examServer', ip='10.0.100.2/24', defaultRoute="ExamServer-eth8", mac='00:00:00:00:00:08')
-    self.addLink(examServer, DataCenter, port1=81, port2=91)
-    webServer = self.addHost('webServer', ip='10.0.100.3/24', defaultRoute="WebServer-eth9", mac='00:00:00:00:00:09')
-    self.addLink(webServer, DataCenter, port1=82, port2=92)
-    dnsServer = self.addHost('dnsServer', ip='10.0.100.4/24', defaultRoute="DnsServer-eth10", mac='00:00:00:00:00:10')
-    self.addLink(dnsServer, DataCenter, port1=83, port2=93)
+    examServer = self.addHost('examserver', ip='10.0.100.2/24', defaultRoute="ExamServer-eth8", mac='00:00:00:00:00:08')
+    self.addLink(examServer, DataCenter, port1=101, port2=401)
+    webServer = self.addHost('webserver', ip='10.0.100.3/24', defaultRoute="WebServer-eth9", mac='00:00:00:00:00:09')
+    self.addLink(webServer, DataCenter, port1=102, port2=402)
+    dnsServer = self.addHost('dnsserver', ip='10.0.100.4/24', defaultRoute="DnsServer-eth10", mac='00:00:00:00:00:10')
+    self.addLink(dnsServer, DataCenter, port1=105, port2=403)
    
-    trustedPC = self.addHost('trustedPC', ip='200.20.203.2/32', defaultRoute="TrustedPC-eth11", mac='00:00:00:00:00:11')
-    self.addLink(trustedPC, CoreSwitch, port1=84, port2=94)
-    guestPC = self.addHost('guestPC', ip='200.20.198.2/32', defaultRoute="GuestPC-eth12", mac='00:00:00:00:00:12')
-    self.addLink(guestPC, CoreSwitch, port1=85, port2=95)
+    trustedPC = self.addHost('trustedpc', ip='200.20.203.2/32', defaultRoute="TrustedPC-eth11", mac='00:00:00:00:00:11')
+    self.addLink(trustedPC, CoreSwitch, port1=200, port2=200)
+    guestPC = self.addHost('guestpc', ip='200.20.198.2/32', defaultRoute="GuestPC-eth12", mac='00:00:00:00:00:12')
+    self.addLink(guestPC, CoreSwitch, port1=201, port2=201)
     # switch1 = self.addSwitch('s1')
     
     
