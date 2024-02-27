@@ -15,6 +15,7 @@
 
 import pox.openflow.libopenflow_01 as of
 from pox.core import core
+protocol = ""
 
 ips = {
     "facultyWS": "10.0.1.2",
@@ -32,7 +33,7 @@ ips = {
 }
 table_rule = [
     [None, None, None, None, ["ARP"], True],  # 1
-    [None, None, None, None, ["ICMP", "UDP"], True],  # 2
+    [None, None, None, None, ["ICMP"], True],  # 2
     [
         ["facultyWS", "facultyPC", "labWS", "studentPC", "itWS", "itPC"],
         None,
@@ -96,9 +97,56 @@ table_rule = [
         None,
         ["UDP"],
         True,
-    ],  # 10
-    [["itWS", "itPC"], None, ["itWS", "itPC"], None, ["TCP", "UDP"], True],
-    [None, None, None, None, None, False],  # 11
+    ],#10
+    [
+        ["facultyWS",  "facultyPC",  "labWS",  "studentPC",  "itWS", "itPC", "examServer", "webServer", "dnsServer"],
+        None,
+        ["printer"],
+        None,
+        ["TCP"],
+        True,
+    ],#printer
+    [
+        ["printer"],
+        None,
+        ["facultyWS",  "facultyPC",  "labWS",  "studentPC",  "itWS", "itPC", "examServer", "webServer", "dnsServer"],
+        None,
+        ["TCP"],
+        True,
+    ],#printer
+    [
+        ["guestPC"],
+        None,
+        ["webServer", "dnsServer"],
+        None,
+        ["TCP", "UDP"],
+        True,
+    ],#guest
+    [
+        ["webServer", "dnsServer"],
+        None,
+        ["guestPC"],
+        None,
+        ["TCP", "UDP"],
+        True,
+    ],#guest
+    [
+        ["webServer", "dnsServer", "studentPC", "labWS"],
+        None,
+        ["trustedPC"],
+        None,
+        ["TCP", "UDP"],
+        True,
+    ],#trusted
+    [
+        ["trustedPC"],
+        None,
+        ["webServer", "dnsServer", "studentPC", "labWS"],
+        None,
+        ["TCP", "UDP"],
+        True,
+    ],#trusted
+    [None, None, None, None, None, False]  # 11
 ]
 
 
@@ -138,8 +186,8 @@ class Firewall(object):
         def accept():
             msg = of.ofp_flow_mod()
             msg.match = of.ofp_match.from_packet(packet)
-            # table.idle_timeout = 30
-            # table.hard_timeout = 30
+            # msg.idle_timeout = 45
+            # msg.hard_timeout = 45
             if packet is not None: log.debug(packet)
             msg.actions.append(of.ofp_action_output(port=of.OFPP_FLOOD))
             # table.buffer_id = packet_in.buffer_id
@@ -217,13 +265,9 @@ class Firewall(object):
                 # print("hey listen")
                 if ip is not None:
                     src = ip.srcip
-                else:
-                    print("No source IP")
                 dst = ip.dstip
                 if dst == None:
                     print("No destination IP")
-                else:
-                    print("No IP header found")
                 tcp = packet.find("tcp")
                 if tcp != None:
                     protocol = "TCP"
@@ -244,10 +288,10 @@ class Firewall(object):
                     # print(dest_ip)
                     # print(protocol)
                     if check_rule(src_ip, dest_ip, protocol) == True:
-                        print("hi")
+                        # print("hi")
                         accept()
                     else:
-                        print("bye")
+                        # print("bye")
                         drop()
             else:
                 print('accept_else')
@@ -257,7 +301,7 @@ class Firewall(object):
         """
         Handles packet in messages from the switch.
         """
-        print("wtf")
+        # print("wtf")
 
         packet = event.parsed  # This is the parsed packet data.
         if not packet.parsed:
