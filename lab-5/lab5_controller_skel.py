@@ -155,7 +155,7 @@ class Routing(object):
                 # Check if destination IP is in the switchboard table
                 subnet = int(dst.split('.')[2])
 
-                if sw == 0:
+                if sw not in [1, 2, 3, 4]:
                     print("Navigating via coreswitch")
                     for row in switchboard[0]:
                         if subnet == row[1]:
