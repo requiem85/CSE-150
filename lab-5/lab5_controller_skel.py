@@ -35,8 +35,9 @@ ips = {
     "examServer": "10.0.100.2",
     "webServer": "10.0.100.3",
     "dnsServer": "10.0.100.4",
-    "trustedPC": "10.0.203.2",
-    "guestPC": "10.0.198.2",
+    "trustedPC": "200.20.203.2",
+    "guestPC": "200.20.198.2",
+    
 }
 
 
@@ -123,8 +124,8 @@ class Routing(object):
             print("accept port", end_port)
             msg = of.ofp_flow_mod()
             msg.match = of.ofp_match.from_packet(packet)
-            # msg.idle_timeout = 45
-            # msg.hard_timeout = 45
+            msg.idle_timeout = 45
+            msg.hard_timeout = 45
             if packet is not None:
                 log.debug(packet)
             msg.actions.append(of.ofp_action_output(port=end_port))
