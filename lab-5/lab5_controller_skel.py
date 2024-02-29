@@ -56,7 +56,9 @@ switchboard = [
         [1, 1, 1, ["ICMP", "TCP", "UDP"]],
         [2, 2, 2, ["ICMP", "TCP", "UDP"]],
         [3, 3, 3, ["ICMP", "TCP", "UDP"]],
-        [4, 100, 4, ["TCP", "UDP"]]
+        [4, 100, 4, ["TCP", "UDP"]],
+        [200, 203, 99, ["TCP"]],
+        
     ],
         # ip, dst_port, switch_port
     [
