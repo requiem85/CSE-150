@@ -28,13 +28,13 @@ class MyTopology(Topo):
 
     studentPC = self.addHost('studentPC', ip='10.0.2.2/24', defaultRoute="studentPC-eth21", mac='00:00:00:00:00:04')
     self.addLink(studentPC, StudentLan, port1=21, port2=51)
-    labWS = self.addHost('labWS', ip='10.0.2.3/24', defaultRoute="labWS-eth21", mac='00:00:00:00:00:05')
+    labWS = self.addHost('labWS', ip='10.0.2.3/24', defaultRoute="labWS-eth22", mac='00:00:00:00:00:05')
     self.addLink(labWS, StudentLan, port1=22, port2=52)
 
 
     itWS = self.addHost('itWS', ip='10.0.3.2/24', defaultRoute="itWS-eth31", mac='00:00:00:00:00:06')
     self.addLink(itWS, ItLan, port1=31, port2=61)
-    itPC = self.addHost('itPC', ip='10.0.3.3/24', defaultRoute="itPC-eth62", mac='00:00:00:00:00:07')
+    itPC = self.addHost('itPC', ip='10.0.3.3/24', defaultRoute="itPC-eth32", mac='00:00:00:00:00:07')
     self.addLink(itPC, ItLan, port1=32, port2=62)
 
 
