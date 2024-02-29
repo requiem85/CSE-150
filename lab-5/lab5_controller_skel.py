@@ -145,7 +145,7 @@ class Routing(object):
             self.connection.send(msg)
             print("Packet Dropped - Flow Table Installed on Switches")
 
-        def checkrule(ip, sw):
+        def checkrule(ip, sw, protocol):
             src = str(ip.srcip)
             dst = str(ip.dstip)
             # print("Source:", ip.srcip)
