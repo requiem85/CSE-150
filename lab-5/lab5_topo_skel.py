@@ -45,10 +45,10 @@ class MyTopology(Topo):
     dnsServer = self.addHost('dns', ip='10.0.100.4/24', defaultRoute='dns-eth105', mac='00:00:00:00:00:10')
     self.addLink(dnsServer, DataCenter, port1=105, port2=403)
    
-    trustedPC = self.addHost('trusted', ip='200.20.203.2/32', defaultRoute="trusted-eth1", mac='00:00:00:00:00:11')
-    self.addLink(trustedPC, CoreSwitch, port1=1, port2=200)
-    guestPC = self.addHost('guest', ip='200.20.198.2/32', defaultRoute="guest-eth1", mac='00:00:00:00:00:12')
-    self.addLink(guestPC, CoreSwitch, port1=1, port2=201)
+    trustedPC = self.addHost('trusted', ip='200.20.203.2/32', defaultRoute="trusted-eth99", mac='00:00:00:00:00:11')
+    self.addLink(trustedPC, CoreSwitch, port1=99, port2=200)
+    guestPC = self.addHost('guest', ip='200.20.198.2/32', defaultRoute="guest-eth98", mac='00:00:00:00:00:12')
+    self.addLink(guestPC, CoreSwitch, port1=98, port2=201)
     # # switch1 = self.addSwitch('s1')
     
     
