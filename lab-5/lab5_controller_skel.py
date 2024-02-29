@@ -202,7 +202,7 @@ class Routing(object):
             #     accept(end_port)
             else:
                 drop()
-            print("End port", end_port)
+            # print("End port", end_port)
             return
 
             # for row in switchboard:
