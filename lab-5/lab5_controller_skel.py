@@ -163,7 +163,7 @@ class Routing(object):
                 if sw not in [1, 2, 3, 4]:
                     print("Navigating via coreswitch")
                     for row in switchboard[0]:
-                        if dst_subnet == row[1]:
+                        if dst_subnet == row[1] and protocol in row[3]:
                             end_port = row[2]
                             accept(end_port)
                             print("End port", end_port)
@@ -191,11 +191,11 @@ class Routing(object):
                             drop()
                     else:
                         print("Destination is in different switch")
-                        if protocol in switchboard[0][sw - 1][3]:
-                            end_port = switchboard[0][sw - 1][2]
-                            accept(end_port)
-                        else:
-                            drop()
+                        # if protocol in switchboard[0][sw - 1][3]:
+                        end_port = switchboard[0][sw - 1][2]
+                        accept(end_port)
+                        # else:
+                        #     drop()
             # elif src in escape_ports:
             #     print("Escaping IP", src)
             #     end_port, _ = escape_ports[src]
