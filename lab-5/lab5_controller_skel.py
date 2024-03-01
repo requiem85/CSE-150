@@ -271,4 +271,3 @@ def launch():
         Routing(event.connection)
 
     core.openflow.addListenerByName("ConnectionUp", start_switch)
-
