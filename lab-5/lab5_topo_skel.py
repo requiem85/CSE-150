@@ -49,26 +49,10 @@ class MyTopology(Topo):
     self.addLink(trustedPC, CoreSwitch, port1=99, port2=200)
     guestPC = self.addHost('guest', ip='200.20.198.2/32', defaultRoute="guest-eth98", mac='00:00:00:00:00:12')
     self.addLink(guestPC, CoreSwitch, port1=98, port2=201)
-    # # switch1 = self.addSwitch('s1')
     
+    discord = self.addHost('discord', ip='200.20.50.5/32', defaultRoute="discord-eth123", mac="00:00:00:00:00:ff")
+    self.addLink(discord, CoreSwitch, port1=123, port2=321)
     
-
- 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
- 
-
-
-
-    # self.addLink(laptop1, switch1, port1=1, port2=2)
 
 if __name__ == '__main__':
   #This part of the script is run when the script is executed

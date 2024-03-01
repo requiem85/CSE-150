@@ -56,7 +56,7 @@ switchboard = [
         [2, 2, 2, ["ICMP", "TCP", "UDP"]],
         [3, 3, 3, ["ICMP", "TCP", "UDP"]],
         [4, 100, 4, ["TCP", "UDP"]],
-        [200, 203, 99, ["TCP"]],
+        # [200, 203, 99, ["TCP"]],
     ],
     # ip, dst_port, switch_port
     [
@@ -76,10 +76,16 @@ switchboard = [
         ("10.0.100.2", 17, 18),
         ("10.0.100.3", 102, 402),
         ("10.0.100.4", 105, 403),
-        ("200.20.203.2", 99, 200),
-        ("200.20.198.2", 98, 201),
+        # ("200.20.203.2", 99, 200),
+        # ("200.20.198.2", 98, 201),
     ],
 ]
+
+internet = {
+    "200.20.203.2": [1, 2, 3, 100],
+    "200.20.198.2": [],
+    "200.20.50.5": [2]
+}
 
 escape_ports = {
     "10.0.1.2": (11, 41),
@@ -94,6 +100,7 @@ escape_ports = {
     "10.0.100.4": (105, 403),
     "200.20.203.2": (99, 200),
     "200.20.198.2": (98, 201),
+    "200.20.50.5": (123, 321)
 }
 
 
@@ -149,34 +156,42 @@ class Routing(object):
             src = str(ip.srcip)
             dst = str(ip.dstip)
             # print("Source:", ip.srcip)
-            print("Source:", src)
-            # print("Dest:", ip.dstip)
-            print("Dest:", dst)
+            # print("Source:", src)
+            # # print("Dest:", ip.dstip)
+            # print("Dest:", dst)
 
             # Write firewall code
             # Check if switch_id is not None
             if sw is not None:
                 # print("Switch:", sw)
                 # Check if destination IP is in the switchboard table
+                src_subnet = int(src.split(".")[2])
                 dst_subnet = int(dst.split(".")[2])
 
                 if sw not in [1, 2, 3, 4]:
                     print("Navigating via coreswitch")
-                    for row in switchboard[0]:
-                        if dst_subnet == row[1] and protocol in row[3]:
-                            end_port = row[2]
+                    if dst in internet:
+                        print("The internet!")
+                        if src_subnet in internet[dst]:
+                            _, end_port = escape_ports[dst]
                             accept(end_port)
-                            print("End port", end_port)
-                            return
-                            # sw = None
-
-                    # if sw == None:
-                    drop()
+                        else:
+                            drop()
+                    else:
+                        print("the university")
+                        for row in switchboard[0]:
+                            if dst_subnet == row[1] and protocol in row[3]:
+                                end_port = row[2]
+                                accept(end_port)
+                                print("End port", end_port)
+                                return
+                                # sw = None
+                        # if sw == None:
+                        drop()
                 else:
                     print("Navigating within switch", sw)
                     if dst_subnet == switchboard[0][sw - 1][1]:
                         print("Destination is in same switch")
-                        src_subnet = int(src.split(".")[2])
                         # for t in switchboard[sw]:
                         #     tmp_ip, _, tmp_port = t
                         #     if tmp_ip == ip.dstip:
@@ -194,49 +209,13 @@ class Routing(object):
                         # if protocol in switchboard[0][sw - 1][3]:
                         end_port = switchboard[0][sw - 1][2]
                         accept(end_port)
-                        # else:
-                        #     drop()
-            # elif src in escape_ports:
-            #     print("Escaping IP", src)
-            #     end_port, _ = escape_ports[src]
-            #     accept(end_port)
+                      
             else:
                 drop()
             # print("End port", end_port)
             return
 
-            # for row in switchboard:
-            #     if row[1] == subnet:
-
-            #     if ip.dstip in row[0]:
-            #         print(ip.dstip)
-
-            #         # If destination IP is in the first cell of the table, set end_port to the second cell
-            #         end_port = row[1]
-            #         print("Destination IP in switchboard")
-            #         print(end_port)
-            #         # if end_port == 100:
-            #         #     if switch_id == 10:
-            #         #         print("Traffic originated from FacultyLAN")
-            #         #         accept()
-            #         #     else:
-            #         #         print("Traffic did not originate from FacultyLAN")
-            #         #         drop()
-            #         # else:
-            #         #     accept()
-            #         # return end_port
-            #         accept()
-            #     elif ip.dstip in [i[0][0] for i in final_destination]:
-            #         end_port = [
-            #             i[1][0] for i in final_destination if i[0][0] == ip.dstip
-            #         ][0]
-            #         print("Destination IP in final_destination")
-            #         print(end_port)
-            #         accept()
-            #         # return end_port
-            #     else:
-            #         drop()
-            #         return
+           
 
         icmp = packet.find("icmp")
         tcp = packet.find("tcp")
@@ -266,55 +245,7 @@ class Routing(object):
             drop()
         return
 
-    # if packet.find("arp"):
-    #     print("drop_arp")
-    #     # checkrule()
-    #     drop()
-    # else:
-    #     print("im up here")
-    #     ip = packet.find("ipv4")
-    #     icmp = packet.find("icmp")
-    #     # print("test")
-    #     # print(icmp)
-    #     # print(ip)
-
-    #     if icmp == None:
-    #         # print("No icmp")
-    #         # print("hey listen")
-    #         if ip is not None:
-    #             src = ip.srcip
-    #         dst = ip.dstip
-    #         if dst == None:
-    #             print("No destination IP")
-    #         tcp = packet.find("tcp")
-    #         if tcp != None:
-    #             protocol = "TCP"
-    #         udp = packet.find("udp")
-    #         if udp != None:
-    #             protocol = "UDP"
-    #         # arp = packet.find("arp")
-    #         # if arp == None:
-    #         #     print("No arp")
-    #         # print("hi2")
-    #         # print(ip)
-    #         if ip is not None:
-    #             # print("hi wahoo")
-    #             src_ip = ip.srcip
-    #             dest_ip = ip.dstip
-    #             # protocol = ip.protocol
-    #             # print(src_ip)
-    #             # print(dest_ip)
-    #             # print(protocol)
-    #             if checkrule(src_ip, dest_ip, protocol) == True:
-    #                 # print("hi")
-    #                 accept()
-    #             else:
-    #                 # print("bye")
-    #                 drop()
-    #         else:
-    #             print("accept_else")
-    #             accept()
-
+   
     def _handle_PacketIn(self, event):
         """
         Handles packet in messages from the switch.
@@ -340,3 +271,4 @@ def launch():
         Routing(event.connection)
 
     core.openflow.addListenerByName("ConnectionUp", start_switch)
+
