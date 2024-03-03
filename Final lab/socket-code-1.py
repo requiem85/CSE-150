@@ -32,7 +32,7 @@ while True:
            s.connect((server_ip, int(server_port)))
            s.sendall(f"/register {args.id}".encode())
         #    response = s.recv(1024).decode()
-           print(response)
+        #    print(response)
 
    elif user_input == "/bridge":
        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
