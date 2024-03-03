@@ -31,7 +31,7 @@ while True:
            s.settimeout(5)
            s.connect((server_ip, int(server_port)))
            s.sendall(f"/register {args.id}".encode())
-           response = s.recv(1024).decode()
+        #    response = s.recv(1024).decode()
            print(response)
 
    elif user_input == "/bridge":
