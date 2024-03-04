@@ -35,6 +35,7 @@ while True:
            s.bind(("127.0.0.1", server_port))
            s.listen(1)
         #    s.settimeout(5)
+           print(server_ip, int(server_port))
            s.connect((server_ip, int(server_port)))
            sys.stdout.write("yo yo you")
            s.sendall(" REGISTER \r \n clientID: {} \r \n IP: {} \r \n Port: {}\r \n".format(args.id,server_ip, server_port).encode())
