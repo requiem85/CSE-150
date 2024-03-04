@@ -25,7 +25,7 @@ except ValueError:
 s = socket(AF_INET, SOCK_STREAM)
 
 print(server_ip, int(server_port))
-# s.connect((server_ip, int(server_port)))
+s.connect((server_ip, int(server_port)))
 # Main loop
 while True:
    user_input = input("Enter command: ").lower()
@@ -41,7 +41,7 @@ while True:
         #    s.settimeout(5)
            server_ip, server_port = args.server.split(":")
            print(server_ip, int(server_port))
-           s.connect((server_ip, int(server_port)))
+        #    s.connect((server_ip, int(server_port)))
            sys.stdout.write("yo yo you")
            print("test1")
            data = "REGISTER\r\n" + "clientID: {}\r\n".format(args.id) + "IP: {}\r\n".format(server_ip) + "Port: {}\r\n".format(server_port) + "\r\n"
@@ -54,7 +54,7 @@ while True:
    elif user_input == "/bridge":
     #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         data2 = "BRIDGE\r\n" + "clientID: {}\r\n".format(args.id) + "\r\n"
-        s.connect((server_ip, int(server_port)))
+        # s.connect((server_ip, int(server_port)))
         print(data2)
         s.send(data2.encode())
         response = s.recv(1024).decode()
