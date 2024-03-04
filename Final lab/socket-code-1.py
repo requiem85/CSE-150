@@ -23,6 +23,7 @@ except ValueError:
    exit(1)
 
 s = socket(AF_INET, SOCK_STREAM)
+print(server_ip, int(server_port))
 s.connect((server_ip, server_port))
 # Main loop
 while True:
@@ -40,7 +41,7 @@ while True:
            print(server_ip, int(server_port))
         #    s.connect((server_ip, int(server_port)))
            sys.stdout.write("yo yo you")
-           s.sendall(" REGISTER \r \n clientID: {} \r \n IP: {} \r \n Port: {}\r \n".format(args.id,server_ip, server_port).encode("utf-8")[:1024])
+           s.sendall("REGISTER\r\nclientID: {}\r\nIP: {}\r\nPort: {}\r\n".format(args.id,server_ip, server_port).encode("utf-8")[:1024])
 
            response = s.recv(1024).decode("utf-8")
         #    mininet]
