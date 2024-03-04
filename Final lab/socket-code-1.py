@@ -42,10 +42,11 @@ while True:
         #    s.connect((server_ip, int(server_port)))
            sys.stdout.write("yo yo you")
            print("test1")
-           s.sendall("REGISTER\r\nclientID: {}\r\nIP: {}\r\nPort: {}\r\n".format(args.id,server_ip, server_port).encode("utf-8")[:1024])
+           data = ("REGISTER\r\nclientID: {}\r\nIP: {}\r\nPort: {}\r\n".format(args.id,server_ip, server_port))
+           s.sendall(data.encode())
            print("test2")
            response = s.recv(1024)
-           response = response.decode("utf-8")
+           print(response.decode())
         #    mininet]
    elif user_input == "/bridge":
        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
