@@ -24,7 +24,7 @@ except ValueError:
 
 s = socket(AF_INET, SOCK_STREAM)
 print(server_ip, int(server_port))
-s.connect((server_ip, server_port))
+s.connect((server_ip, int(server_port)))
 # Main loop
 while True:
    user_input = input("Enter command: ").lower()
