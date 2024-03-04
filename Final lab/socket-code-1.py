@@ -57,9 +57,9 @@ while True:
         # s.connect((server_ip, int(server_port)))
         print(data2)
         s.send(data2.encode())
-        response = s.recv(1024).decode()
+        response2 = s.recv(1024).decode()
            # Process the bridge response here
-        print("Bridge response:", response)
+        print("Bridge response:", response2)
 
    elif user_input == "/exit":
        break
