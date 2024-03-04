@@ -6,7 +6,7 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("--id", type=str, required=True, help="Client ID")
 parser.add_argument("--port", type=int, required=True, help="Client port")
-parser.add_argument("--server", type=str, required=True, help="Server IP:Port number")
+parser.add_argument("--server", type=int, required=True, help="Server IP:Port number")
 args = parser.parse_args()
 
 # Validate port and server arguments
