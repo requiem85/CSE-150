@@ -31,7 +31,7 @@ while True:
        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
            s.settimeout(5)
            s.connect((server_ip, int(server_port)))
-           s.sendall("/register {} {} {}".format(args.id, server_port, server_ip).encode())
+           s.sendall("/register \r \n {} \r \n {} \r \n {}\r \n \r \n".format(args.id, server_port, server_ip).encode())
         #    response = s.recv(1024).decode()
         #    mininet]
    elif user_input == "/bridge":
