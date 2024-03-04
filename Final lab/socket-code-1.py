@@ -16,12 +16,14 @@ if not 1024 <= args.port <= 65535:
 
 try:
 #    server_ip, server_port = args.server.split(":")
-    server_port = args.port
-    server_ip = args.server
+    server_port = args.port #server port
+    server_ip = args.server #server ip
 except ValueError:
    print("Invalid server argument. Format: IP:Port")
    exit(1)
 
+s = socket(AF_INET, SOCK_STREAM)
+s.connect((server_ip, server_port))
 # Main loop
 while True:
    user_input = input("Enter command: ").lower()
@@ -31,16 +33,16 @@ while True:
        print("Your ID:", args.id)
 
    elif user_input == "/register":
-       with socket(AF_INET, SOCK_STREAM) as s:
-           s.bind(("127.0.0.1", server_port))
-           s.listen(1)
+    #    with socket(AF_INET, SOCK_STREAM) as s:
+        #    s.bind(("127.0.0.1", server_port))
+        #    s.listen(1)
         #    s.settimeout(5)
            print(server_ip, int(server_port))
-           s.connect((server_ip, int(server_port)))
+        #    s.connect((server_ip, int(server_port)))
            sys.stdout.write("yo yo you")
-           s.sendall(" REGISTER \r \n clientID: {} \r \n IP: {} \r \n Port: {}\r \n".format(args.id,server_ip, server_port).encode())
+           s.sendall(" REGISTER \r \n clientID: {} \r \n IP: {} \r \n Port: {}\r \n".format(args.id,server_ip, server_port).encode("utf-8")[:1024])
 
-        #    response = s.recv(1024).decode()
+           response = s.recv(1024).decode("utf-8")
         #    mininet]
    elif user_input == "/bridge":
        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
