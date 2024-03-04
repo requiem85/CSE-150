@@ -30,7 +30,7 @@ while True:
 
    elif user_input == "/register":
        with socket(AF_INET, SOCK_STREAM) as s:
-           s.bind(("127.0.0.1", 2500))
+           s.bind(("127.0.0.1", 2501))
            s.listen(1)
            s.settimeout(5)
            s.connect((server_ip, int(server_port)))
