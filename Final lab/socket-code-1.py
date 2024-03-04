@@ -42,7 +42,7 @@ while True:
         #    s.connect((server_ip, int(server_port)))
            sys.stdout.write("yo yo you")
            print("test1")
-           data = ("REGISTER\r\nclientID: {}\r\nIP: {}\r\nPort: {}\r\n".format(args.id,server_ip, server_port))
+           data = "REGISTER\r\n" + "clientID: {}\r\n".format(args.id) + "IP: {}\r\n".format(server_ip) + "Port: {}\r\n".format(server_port) + "\r\n"
            s.send(data.encode())
            print("test2")
            response = s.recv(1024)
