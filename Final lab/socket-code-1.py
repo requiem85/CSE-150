@@ -52,7 +52,7 @@ while True:
     #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
            data = "BRIDGE\r\n" + "clientID: {}\r\n".format(args.id) + "\r\n"
         #    s.connect((server_ip, int(server_port)))
-           s.sendall(data.encode())
+           s.send(data.encode())
            response = s.recv(1024).decode()
            # Process the bridge response here
            print("Bridge response:", response)
