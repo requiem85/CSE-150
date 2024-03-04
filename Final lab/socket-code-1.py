@@ -1,5 +1,6 @@
 import argparse
-import socket
+from socket import *
+import sys
 
 # Parse input arguments
 parser = argparse.ArgumentParser()
@@ -29,9 +30,13 @@ while True:
 
    elif user_input == "/register":
        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+           s.bind(server_ip, server_port)
+           s.listen(1)
            s.settimeout(5)
            s.connect((server_ip, int(server_port)))
+           sys.stdout.write("yo yo you")
            s.sendall(" REGISTER \r \n Client: {} \r \n IP: {} \r \n Port: {}\r \n".format(args.id,server_ip, server_port).encode())
+
         #    response = s.recv(1024).decode()
         #    mininet]
    elif user_input == "/bridge":
