@@ -22,6 +22,7 @@ except ValueError:
 # Main loop
 while True:
    user_input = input("Enter command: ").lower()
+   print(user_input)
 
    if user_input == "/id":
        print("Your ID:", args.id)
@@ -30,10 +31,9 @@ while True:
        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
            s.settimeout(5)
            s.connect((server_ip, int(server_port)))
-           s.sendall(f"/register {args.id}".encode())
+           s.sendall(f"/register {args.id, args.IP, args.server_ip}".encode())
         #    response = s.recv(1024).decode()
-        #    print(response)
-
+        #    mininet]
    elif user_input == "/bridge":
        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
            s.connect((server_ip, int(server_port)))
