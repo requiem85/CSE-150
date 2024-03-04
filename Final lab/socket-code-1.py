@@ -47,6 +47,7 @@ while True:
            print("test2")
            response = s.recv(1024)
            print(response.decode())
+           s.close()
         #    mininet]
    elif user_input == "/bridge":
     #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
