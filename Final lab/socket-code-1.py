@@ -43,7 +43,7 @@ while True:
            sys.stdout.write("yo yo you")
            print("test1")
            data = ("REGISTER\r\nclientID: {}\r\nIP: {}\r\nPort: {}\r\n".format(args.id,server_ip, server_port))
-           s.sendall(data.encode())
+           s.send(data.encode())
            print("test2")
            response = s.recv(1024)
            print(response.decode())
