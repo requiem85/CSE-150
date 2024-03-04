@@ -38,6 +38,7 @@ while True:
         #    s.bind(("127.0.0.1", server_port))
         #    s.listen(1)
         #    s.settimeout(5)
+           server_ip, server_port = args.server.split(":")
            print(server_ip, int(server_port))
            s.connect((server_ip, int(server_port)))
            sys.stdout.write("yo yo you")
