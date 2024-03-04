@@ -15,7 +15,9 @@ if not 1024 <= args.port <= 65535:
    exit(1)
 
 try:
-   server_ip, server_port = args.server.split(":")
+#    server_ip, server_port = args.server.split(":")
+    server_port = args.port
+    server_ip = args.server
 except ValueError:
    print("Invalid server argument. Format: IP:Port")
    exit(1)
@@ -30,12 +32,12 @@ while True:
 
    elif user_input == "/register":
        with socket(AF_INET, SOCK_STREAM) as s:
-           s.bind(("127.0.0.1", 2501))
+           s.bind(("127.0.0.1", server_port))
            s.listen(1)
-           s.settimeout(5)
-           s.connect((server_ip, int(server_port)))
+        #    s.settimeout(5)
+        #    s.connect((server_ip, int(server_port)))
            sys.stdout.write("yo yo you")
-           s.sendall(" REGISTER \r \n Client: {} \r \n IP: {} \r \n Port: {}\r \n".format(args.id,server_ip, server_port).encode())
+           s.sendall(" REGISTER \r \n clientID: {} \r \n IP: {} \r \n Port: {}\r \n".format(args.id,server_ip, server_port).encode())
 
         #    response = s.recv(1024).decode()
         #    mininet]
