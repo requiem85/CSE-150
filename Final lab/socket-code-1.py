@@ -23,6 +23,7 @@ except ValueError:
    exit(1)
 
 s = socket(AF_INET, SOCK_STREAM)
+
 print(server_ip, int(server_port))
 # s.connect((server_ip, int(server_port)))
 # Main loop
@@ -48,7 +49,7 @@ while True:
            print("test2")
            response = s.recv(1024)
            print(response.decode())
-           s.close()
+        #    s.close()
         #    mininet]
    elif user_input == "/bridge":
     #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
