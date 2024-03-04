@@ -29,7 +29,7 @@ while True:
        print("Your ID:", args.id)
 
    elif user_input == "/register":
-       with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+       with socket(AF_INET, SOCK_STREAM) as s:
            s.bind(server_ip, server_port)
            s.listen(1)
            s.settimeout(5)
