@@ -49,9 +49,10 @@ while True:
            print(response.decode())
         #    mininet]
    elif user_input == "/bridge":
-       with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-           s.connect((server_ip, int(server_port)))
-           s.sendall(f"/bridge {args.id}".encode())
+    #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+           data = "BRIDGE\r\n" + "clientID: {}\r\n".format(args.id) + "\r\n"
+        #    s.connect((server_ip, int(server_port)))
+           s.sendall(data.encode())
            response = s.recv(1024).decode()
            # Process the bridge response here
            print("Bridge response:", response)
