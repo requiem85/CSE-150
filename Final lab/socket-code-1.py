@@ -15,9 +15,9 @@ if not 1024 <= args.port <= 65535:
    exit(1)
 
 try:
-#    server_ip, server_port = args.server.split(":")
-    server_port = args.port #server port
-    server_ip = args.server #server ip
+    server_ip, server_port = args.server.split(":")
+    # server_port = args.port #server port
+    # server_ip = args.server #server ip
 except ValueError:
    print("Invalid server argument. Format: IP:Port")
    exit(1)
