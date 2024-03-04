@@ -6,7 +6,7 @@ import sys
 parser = argparse.ArgumentParser()
 parser.add_argument("--id", type=str, required=True, help="Client ID")
 parser.add_argument("--port", type=int, required=True, help="Client port")
-parser.add_argument("--server", type=int, required=True, help="Server IP:Port number")
+parser.add_argument("--server", type=str, required=True, help="Server IP:Port number")
 args = parser.parse_args()
 
 # Validate port and server arguments
@@ -30,7 +30,7 @@ while True:
 
    elif user_input == "/register":
        with socket(AF_INET, SOCK_STREAM) as s:
-           s.bind((server_ip, server_port))
+           s.bind(("127.0.0.1", 2500))
            s.listen(1)
            s.settimeout(5)
            s.connect((server_ip, int(server_port)))
