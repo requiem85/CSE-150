@@ -45,6 +45,7 @@ while True:
            sys.stdout.write("yo yo you")
            print("test1")
            data = "REGISTER\r\n" + "clientID: {}\r\n".format(args.id) + "IP: {}\r\n".format(server_ip) + "Port: {}\r\n".format(server_port) + "\r\n"
+           print(data)
            s.send(data.encode())
            print("test2")
            response = s.recv(1024)
