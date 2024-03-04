@@ -51,7 +51,7 @@ while True:
    elif user_input == "/bridge":
     #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         data2 = "BRIDGE\r\n" + "clientID: {}\r\n".format(args.id) + "\r\n"
-        #    s.connect((server_ip, int(server_port)))
+        s.connect((server_ip, int(server_port)))
         print(data2)
         s.send(data2.encode())
         response = s.recv(1024).decode()
