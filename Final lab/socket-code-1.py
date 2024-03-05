@@ -39,8 +39,8 @@ while True:
         #    s.bind(("127.0.0.1", server_port))
         #    s.listen(1)
         #    s.settimeout(5)
-           server_ip, server_port = args.server.split(":")
-           print(server_ip, int(server_port))
+         #   server_ip, server_port = args.server.split(":")
+         #   print(server_ip, int(server_port))
         #    s.connect((server_ip, int(server_port)))
            sys.stdout.write("yo yo you")
            print("test1")
@@ -54,7 +54,7 @@ while True:
         #    mininet]
    elif user_input == "/bridge":
     #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        data2 = "BRIDGE\r\n" + "clientID: {}\r\n".format(args.id) + "\r\n"
+        data2 = "BRIDGE\r\n" + "clientID: ced\r\n" + "\r\n"
         # s.connect((server_ip, int(server_port)))
         print(data2)
         s.send(data2.encode())
