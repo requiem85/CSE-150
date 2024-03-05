@@ -54,7 +54,7 @@ while True:
         #    mininet]
    elif user_input == "/bridge":
     #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        data2 = "BRIDGE\r\nclientID: ced\r\n\r\n"
+        data2 = "BRIDGE\r\nclientID: {}\r\n\r\n".format(args.id)
         # s.connect((server_ip, int(server_port)))
         print(data2)
         s.send(data2.encode())
