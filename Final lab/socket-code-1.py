@@ -1,5 +1,5 @@
 import argparse
-from socket import *
+import socket
 import sys
 
 # Parse input arguments
@@ -22,7 +22,7 @@ except ValueError:
     print("Invalid server argument. Format: IP:Port")
     exit(1)
 
-s = socket(AF_INET, SOCK_STREAM)
+# s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 valid = ["/id", "/register", "/bridge", "/chat", "/quit"]
 
@@ -34,46 +34,46 @@ while True:
     if user_input not in valid:
         print("Invalid command.")
         continue
-    else:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((server_ip, int(server_port)))
 
-    if user_input == "/id":
-        print("Your ID:", args.id)
+        if user_input == "/id":
+            print("Your ID:", args.id)
 
-    elif user_input == "/register":
-        #    with socket(AF_INET, SOCK_STREAM) as s:
-        #    s.bind(("127.0.0.1", server_port))
-        #    s.listen(1)
-        #    s.settimeout(5)
-        #   server_ip, server_port = args.server.split(":")
-        #   print(server_ip, int(server_port))
-        #    s.connect((server_ip, int(server_port)))
-        sys.stdout.write("yo yo you")
-        print("test1")
-        data = (
-            "REGISTER\r\n"
-            + "clientID: {}\r\n".format(args.id)
-            + "IP: {}\r\n".format(server_ip)
-            + "Port: {}\r\n".format(server_port)
-            + "\r\n"
-        )
-        print(data)
-        s.send(data.encode())
-        print("test2")
-        response = s.recv(1024)
-        print(response.decode())
-    #    s.close()
-    #    mininet]
-    elif user_input == "/bridge":
-        #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        data2 = "BRIDGE\r\nclientID: {}\r\n\r\n".format(args.id)
-        # s.connect((server_ip, int(server_port)))
-        print(data2)
-        s.send(data2.encode())
-        response2 = s.recv(1024).decode()
-        # Process the bridge response here
-        print("Bridge response:", response2)
+        elif user_input == "/register":
+            #    with socket(AF_INET, SOCK_STREAM) as s:
+            #    s.bind(("127.0.0.1", server_port))
+            #    s.listen(1)
+            #    s.settimeout(5)
+            #   server_ip, server_port = args.server.split(":")
+            #   print(server_ip, int(server_port))
+            #    s.connect((server_ip, int(server_port)))
+            sys.stdout.write("yo yo you")
+            print("test1")
+            data = (
+                "REGISTER\r\n"
+                + "clientID: {}\r\n".format(args.id)
+                + "IP: {}\r\n".format(server_ip)
+                + "Port: {}\r\n".format(server_port)
+                + "\r\n"
+            )
+            print(data)
+            s.send(data.encode())
+            print("test2")
+            response = s.recv(1024)
+            print(response.decode())
+        #    s.close()
+        #    mininet]
+        elif user_input == "/bridge":
+            #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            data2 = "BRIDGE\r\nclientID: {}\r\n\r\n".format(args.id)
+            # s.connect((server_ip, int(server_port)))
+            print(data2)
+            s.send(data2.encode())
+            response2 = s.recv(1024).decode()
+            # Process the bridge response here
+            print("Bridge response:", response2)
 
-    s.close()
+        s.close()
 
 print("Program terminated.")
