@@ -90,11 +90,40 @@ while True:
                 print("Peer found:", peer_id, peer_ip, peer_port)
                 peer_port = int(peer_port)
             else:
+                # first client, wait for peer to start connection, then send data back
                 print("No peer found.")
+                s.close()
+                s.bind(('', port))
+                s.listen(1)
+                conn, addr = s.accept()
+                with conn:
+                    print('Connected by', addr)
+                    while True:
+                        data = conn.recv(1024).decode()
+                        if data == "QUIT\r\n\r\n":
+                            exit(0)
+                        print(data)
+                        i = input()
+                        if i == "/quit":
+                            conn.sendall("QUIT\r\n\r\n".encode())
+                            exit(0)
+                        conn.sendall(i.encode())
 
             s.close()
         elif user_input == "/chat":
-            pass
+            s.close()
+            s.connect((peer_ip, peer_port))
+            while True:
+                i = input()
+                if i == "/quit":
+                    s.sendall("QUIT\r\n\r\n".encode())
+                    break
+                s.sendall(i.encode())
+                data = s.recv(1024).decode()
+                if data == "QUIT\r\n\r\n":
+                    exit(0)
+                print(data)
+            s.close()
 
 
 print("Program terminated.")
