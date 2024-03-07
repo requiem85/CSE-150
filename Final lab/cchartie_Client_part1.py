@@ -117,7 +117,7 @@ while True:
             s.connect((peer_ip, peer_port))
             while True:
                 i = input()
-                if i == "/quit":
+                if "/quit" in i:
                     s.sendall("QUIT\r\n\r\n".encode())
                     break
                 s.sendall(i.encode())
