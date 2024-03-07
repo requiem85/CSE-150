@@ -29,6 +29,10 @@ except ValueError:
 valid = ["/id", "/register", "/bridge", "/chat", "/quit"]
 
 print(server_ip, int(server_port))
+
+peer_ip = None
+peer_port = None
+
 # Main loop
 while True:
     user_input = input("Enter command: ").lower()
@@ -70,14 +74,26 @@ while True:
         elif user_input == "/bridge":
             s.connect((server_ip, int(server_port)))
             #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            data2 = "BRIDGE\r\nclientID: {}\r\n\r\n".format(args.id)
+            data = "BRIDGE\r\nclientID: {}\r\n\r\n".format(args.id)
             # s.connect((server_ip, int(server_port)))
             # print(data2)
-            s.send(data2.encode())
-            response2 = s.recv(1024).decode()
+            s.send(data.encode())
+            response = s.recv(1024).decode()
             # Process the bridge response here
-            print("Bridge response:", response2)
+            print("Bridge response:", response)
+            response = response.split("\r\n")
+            peer_id = response[1].split(": ")[1]
+            peer_ip = response[2].split(": ")[1]
+            peer_port = int(response[3].split(": ")[1])
+
+            if peer_id and peer_ip and peer_port:
+                print("Peer found:", peer_id, peer_ip, peer_port)
+            else:
+                print("No peer found.")
+
             s.close()
+        elif user_input == "/chat":
+            pass
 
 
 print("Program terminated.")
