@@ -61,7 +61,7 @@ while True:
             s.send(data.encode())
             # print("test2")
             response = s.recv(1024)
-            # print(response.decode())
+            print("Register response:", response.decode())
         #    s.close()
         #    mininet]
             s.close()
@@ -74,7 +74,7 @@ while True:
             s.send(data2.encode())
             response2 = s.recv(1024).decode()
             # Process the bridge response here
-            # print("Bridge response:", response2)
+            print("Bridge response:", response2)
             s.close()
 
 
