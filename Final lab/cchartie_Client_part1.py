@@ -93,6 +93,7 @@ while True:
                 # first client, wait for peer to start connection, then send data back
                 print("No peer found.")
                 s.close()
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 s.bind(('', port))
                 s.listen(1)
                 conn, addr = s.accept()
@@ -112,6 +113,7 @@ while True:
             s.close()
         elif user_input == "/chat":
             s.close()
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             s.connect((peer_ip, peer_port))
             while True:
                 i = input()
