@@ -35,12 +35,12 @@ while True:
         print("Invalid command.")
         continue
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((server_ip, int(server_port)))
 
         if user_input == "/id":
             print("Your ID:", args.id)
 
         elif user_input == "/register":
+            s.connect((server_ip, int(server_port)))
             #    with socket(AF_INET, SOCK_STREAM) as s:
             #    s.bind(("127.0.0.1", server_port))
             #    s.listen(1)
@@ -48,8 +48,8 @@ while True:
             #   server_ip, server_port = args.server.split(":")
             #   print(server_ip, int(server_port))
             #    s.connect((server_ip, int(server_port)))
-            sys.stdout.write("yo yo you")
-            print("test1")
+            # sys.stdout.write("yo yo you")
+            # print("test1")
             data = (
                 "REGISTER\r\n"
                 + "clientID: {}\r\n".format(args.id)
@@ -57,23 +57,25 @@ while True:
                 + "Port: {}\r\n".format(server_port)
                 + "\r\n"
             )
-            print(data)
+            # print(data)
             s.send(data.encode())
-            print("test2")
+            # print("test2")
             response = s.recv(1024)
-            print(response.decode())
+            # print(response.decode())
         #    s.close()
         #    mininet]
+            s.close()
         elif user_input == "/bridge":
+            s.connect((server_ip, int(server_port)))
             #    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             data2 = "BRIDGE\r\nclientID: {}\r\n\r\n".format(args.id)
             # s.connect((server_ip, int(server_port)))
-            print(data2)
+            # print(data2)
             s.send(data2.encode())
             response2 = s.recv(1024).decode()
             # Process the bridge response here
-            print("Bridge response:", response2)
+            # print("Bridge response:", response2)
+            s.close()
 
-        s.close()
 
 print("Program terminated.")
