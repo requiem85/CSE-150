@@ -14,6 +14,8 @@ if not 1024 <= args.port <= 65535:
     print("Invalid port number. Must be between 1024 and 65535.")
     exit(1)
 
+port = args.port
+
 try:
     server_ip, server_port = args.server.split(":")
     # server_port = args.port #server port
@@ -54,7 +56,7 @@ while True:
                 "REGISTER\r\n"
                 + "clientID: {}\r\n".format(args.id)
                 + "IP: {}\r\n".format(server_ip)
-                + "Port: {}\r\n".format(server_port)
+                + "Port: {}\r\n".format(port)
                 + "\r\n"
             )
             # print(data)
