@@ -105,7 +105,7 @@ while True:
                             exit(0)
                         print(data)
                         i = input()
-                        if i == "/quit":
+                        if "/quit" in i:
                             conn.sendall("QUIT\r\n\r\n".encode())
                             exit(0)
                         conn.sendall(i.encode())
@@ -119,7 +119,7 @@ while True:
                 i = input()
                 if "/quit" in i:
                     s.sendall("QUIT\r\n\r\n".encode())
-                    break
+                    exit()
                 s.sendall(i.encode())
                 data = s.recv(1024).decode()
                 if data == "QUIT\r\n\r\n":
