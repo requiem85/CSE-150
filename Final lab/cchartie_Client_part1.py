@@ -84,10 +84,11 @@ while True:
             response = response.split("\r\n")
             peer_id = response[1].split(": ")[1]
             peer_ip = response[2].split(": ")[1]
-            peer_port = int(response[3].split(": ")[1])
+            peer_port = response[3].split(": ")[1]
 
             if peer_id and peer_ip and peer_port:
                 print("Peer found:", peer_id, peer_ip, peer_port)
+                peer_port = int(peer_port)
             else:
                 print("No peer found.")
 
