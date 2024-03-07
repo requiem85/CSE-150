@@ -36,7 +36,7 @@ peer_port = None
 # Main loop
 while True:
     user_input = input("Enter command: ").lower()
-    print(user_input)
+    # print(user_input)
     if user_input not in valid:
         print("Invalid command.")
         continue
@@ -67,7 +67,7 @@ while True:
             s.send(data.encode())
             # print("test2")
             response = s.recv(1024)
-            print("Register response:", response.decode())
+            # print("Register response:", response.decode())
         #    s.close()
         #    mininet]
             s.close()
@@ -80,25 +80,25 @@ while True:
             s.send(data.encode())
             response = s.recv(1024).decode()
             # Process the bridge response here
-            print("Bridge response:", response)
+            # print("Bridge response:", response)
             response = response.split("\r\n")
             peer_id = response[1].split(": ")[1]
             peer_ip = response[2].split(": ")[1]
             peer_port = response[3].split(": ")[1]
 
             if peer_id and peer_ip and peer_port:
-                print("Peer found:", peer_id, peer_ip, peer_port)
+                # print("Peer found:", peer_id, peer_ip, peer_port)
                 peer_port = int(peer_port)
             else:
                 # first client, wait for peer to start connection, then send data back
-                print("No peer found.")
+                # print("No peer found.")
                 s.close()
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 s.bind(('', port))
                 s.listen(1)
                 conn, addr = s.accept()
                 with conn:
-                    print('Connected by', addr)
+                    # print('Connected by', addr)
                     while True:
                         data = conn.recv(1024).decode()
                         if data == "QUIT\r\n\r\n":
@@ -125,7 +125,6 @@ while True:
                 if data == "QUIT\r\n\r\n":
                     exit(0)
                 print(data)
-            s.close()
 
 
 print("Program terminated.")
