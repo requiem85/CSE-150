@@ -136,7 +136,7 @@ class Routing(object):
                 src_subnet = int(src.split(".")[2])
                 dst_subnet = int(dst.split(".")[2])
 
-                if sw not in [1, 2, 3, 4]:
+                if sw not in [1, 2, 3, 4, 5, 6]:
                     print("Navigating via coreswitch")
                     if dst in internet:
                         print("The internet!")
