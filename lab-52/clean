@@ -1,0 +1,4 @@
+#!/bin/bash
+rm ~/pox/pox/misc/lab5_controller_skel.py
+cp lab5_controller_skel.py ~/pox/pox/misc/
+echo "done"
