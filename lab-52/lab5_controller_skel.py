@@ -1,8 +1,7 @@
-
-#commands to run code
-#rm ~/pox/pox/misc/lab5_controller_skel.py
-#cp lab5_controller_skel.py ~/pox/pox/misc/
-#sudo ~/pox/pox.py log.level --packet=WARN misc.lab5_controller_skel
+# commands to run code
+# rm ~/pox/pox/misc/lab5_controller_skel.py
+# cp lab5_controller_skel.py ~/pox/pox/misc/
+# sudo ~/pox/pox.py log.level --packet=WARN misc.lab5_controller_skel
 from pox.core import core
 
 import pox.openflow.libopenflow_01 as of
@@ -20,31 +19,29 @@ ips = {
     "h203": "128.114.2.203",
     "h204": "128.114.2.204",
     "h_server": "128.114.3.178",
-    "h_trust": "200.20.203.2",
+    "h_trust": "192.47.38.109",
     "h_untrust": "108.35.24.113",
 }
 
 switchboard = [
     [
         # switch_id, subnet, port, allowed protocols
-        [1, 1, 1, ["ICMP", "TCP", "UDP"]], # floor 1 switch 1
-        [2, 1, 2, ["ICMP", "TCP", "UDP"]], # floor 1 switch 2
-        [3, 2, 3, ["ICMP", "TCP", "UDP"]], # floor 2 switch 1
-        [4, 2, 4, ["ICMP", "TCP", "UDP"]], # floor 2 switch 2
-        [5, 3, 5, ["ICMP", "TCP", "UDP"]], # datacenter
-        #[4, 100, 4, ["TCP", "UDP"]],
+        [1, 1, 1, ["ICMP", "TCP", "UDP"]],  # floor 1 switch 1
+        [2, 1, 2, ["ICMP", "TCP", "UDP"]],  # floor 1 switch 2
+        [3, 2, 3, ["ICMP", "TCP", "UDP"]],  # floor 2 switch 1
+        [4, 2, 4, ["ICMP", "TCP", "UDP"]],  # floor 2 switch 2
+        [5, 3, 5, ["ICMP", "TCP", "UDP"]],  # datacenter
+        # [4, 100, 4, ["TCP", "UDP"]],
         # [200, 203, 99, ["TCP"]],
     ],
     # ip, dst_port, switch_port
     {
         ips["h101"]: (11, 41),
         ips["h102"]: (12, 42),
-        
     },
     {
         ips["h103"]: (13, 43),
         ips["h104"]: (14, 44),
-
     },
     {
         ips["h201"]: (21, 51),
@@ -53,25 +50,21 @@ switchboard = [
     {
         ips["h203"]: (23, 53),
         ips["h204"]: (24, 54),
-        
-
     },
     {
         ips["h_server"]: (17, 18),
-        
     },
 ]
 
 internet = {
-    ips["h_trust"]: [1, 2, 3, 4, 5, 6], # which subnet(s) h_trust is allowed to ping
-    ips["h_untrust"]: [1, 2, 3, 4, 5, 6],   
-    
+    ips["h_trust"]: [1],  # which subnet(s) h_trust is allowed to ping
+    ips["h_untrust"]: [],
 }
 
 allowed_connections = {
-    1: [1, 2, 3, 4, 5, 6], # subnet 1 is allowed to connect to subnets 1 and 3
-    2: [1, 2, 3, 4, 5, 6],
-    3: [1, 2, 3, 4, 5, 6],
+    1: [1, 3],  # subnet 1 is allowed to connect to subnets 1 and 3
+    2: [2, 3],
+    3: [1, 2, 3],
 }
 
 escape_ports = {
@@ -158,20 +151,40 @@ class Routing(object):
                     print("Navigating via coreswitch")
                     print(src, dst, src_subnet, dst_subnet)
                     # time.sleep(10)
-                    if dst in internet:
-                        print("The internet!")
-                        if src_subnet in internet[dst]:
-                            _, end_port = escape_ports[dst]
-                            accept(end_port)
+                    if src in internet:
+                        print("from the internet!")
+                        if dst_subnet in internet[src]:
+                            # _, end_port = escape_ports[dst]
+                            # accept(end_port)
+                            for row in switchboard[0]:
+                                if (
+                                    dst_subnet == row[1]
+                                    and protocol in row[3]
+                                    and dst in switchboard[row[0]]
+                                ):
+                                    end_port = row[2]
+                                    accept(end_port)
+                                    print("End port", end_port)
+                                    return
+                                    # sw = None
+                            # if sw == None:
+                            drop()
                         else:
                             drop()
                     else:
-                        print("the company network!")
-                        if dst_subnet not in allowed_connections[src_subnet]:
+                        print("from the university!")
+                        if dst in internet:
+                            print("to the internet!")
+                            accept(escape_ports[dst][1])
+                        elif dst_subnet not in allowed_connections[src_subnet]:
                             drop()
                         else:
                             for row in switchboard[0]:
-                                if dst_subnet == row[1] and protocol in row[3] and dst in switchboard[row[0]]:
+                                if (
+                                    dst_subnet == row[1]
+                                    and protocol in row[3]
+                                    and dst in switchboard[row[0]]
+                                ):
                                     end_port = row[2]
                                     accept(end_port)
                                     print("End port", end_port)
@@ -191,7 +204,9 @@ class Routing(object):
                         #         accept()
                         #         return
                         # drop()
-                        if dst in escape_ports:# and (dst != "10.0.100.2" or src_subnet == 1):
+                        if (
+                            dst in escape_ports
+                        ):  # and (dst != "10.0.100.2" or src_subnet == 1):
                             _, end_port = escape_ports[dst]
                             accept(end_port)
                         else:
@@ -201,13 +216,11 @@ class Routing(object):
                         # if protocol in switchboard[0][sw - 1][3]:
                         end_port = switchboard[0][sw - 1][2]
                         accept(end_port)
-                      
+
             else:
                 drop()
             # print("End port", end_port)
             return
-
-           
 
         icmp = packet.find("icmp")
         tcp = packet.find("tcp")
@@ -237,7 +250,6 @@ class Routing(object):
             drop()
         return
 
-   
     def _handle_PacketIn(self, event):
         """
         Handles packet in messages from the switch.
@@ -247,11 +259,11 @@ class Routing(object):
             log.warning("Ignoring incomplete packet")
             return
 
-        print('packet', packet)
-        print('dpid', event.dpid)
+        print("packet", packet)
+        print("dpid", event.dpid)
         packet_in = event.ofp  # The actual ofp_packet_in message.
-        print('packet_in', packet_in)
-        print('event.port', event.port)
+        print("packet_in", packet_in)
+        print("event.port", event.port)
         self.do_routing(packet, packet_in, event.port, event.dpid)
 
 
